@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "outDir": "./lib",
+        "strict": true,
+        "declaration": true,
+        "target": "es5",
+        "moduleResolution": "node",
+        "lib": ["esnext", "dom"],
+        "jsx": "preserve"
+    },
+    "include": [
+        "./src/**/*/"
+    ]
+}
