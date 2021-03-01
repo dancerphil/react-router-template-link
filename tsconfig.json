@@ -6,7 +6,7 @@
         "target": "es5",
         "moduleResolution": "node",
         "lib": ["esnext", "dom"],
-        "jsx": "preserve"
+        "jsx": "react"
     },
     "include": [
         "./src/**/*/"

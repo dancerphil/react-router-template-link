@@ -1,8 +1,8 @@
-import {FC, CSSProperties, AnchorHTMLAttributes} from 'react';
+import * as React from 'react';
 import {NavLink as RouterLink, NavLinkProps, useHistory} from 'react-router-dom';
 import * as queryString from 'query-string';
 
-type PickedProps = Pick<AnchorHTMLAttributes<HTMLAnchorElement>, 'className' | 'style' | 'onClick'>;
+type PickedProps = Pick<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'className' | 'style' | 'onClick'>;
 
 interface ExtraProps extends PickedProps {
     /* 开启新窗口 */
@@ -11,18 +11,18 @@ interface ExtraProps extends PickedProps {
     external?: boolean;
     hash?: string;
     activeClassName?: string;
-    activeStyle?: CSSProperties;
+    activeStyle?: React.CSSProperties;
     isActive?: NavLinkProps['isActive'];
 }
 
-interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
+interface LinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
     /* 开启新窗口 */
     blank?: boolean;
     /** @deprecated auto figured */
     external?: boolean;
     to?: string;
     activeClassName?: string;
-    activeStyle?: CSSProperties;
+    activeStyle?: React.CSSProperties;
     isActive?: NavLinkProps['isActive'];
 }
 
@@ -59,7 +59,7 @@ const createFactory = (options: FactoryParams = {}) => {
         encodePathVariable = false,
     } = options;
 
-    const Link: FC<LinkProps> = props => {
+    const Link: React.FC<LinkProps> = props => {
         const history = useHistory();
 
         const {blank, to, external: propsExternal, ...restProps} = props;
@@ -96,7 +96,7 @@ const createFactory = (options: FactoryParams = {}) => {
         return <RouterLink to={to} {...restProps} />;
     };
 
-    function createLink<T>(urlTemplate: string, initialProps?: Partial<T> & ExtraProps): FC<T & ExtraProps> {
+    function createLink<T>(urlTemplate: string, initialProps?: Partial<T> & ExtraProps): React.FC<T & ExtraProps> {
 
         type ToUrl = (variables: T) => string;
         let toQuery = (value: any) => value;
@@ -113,7 +113,7 @@ const createFactory = (options: FactoryParams = {}) => {
             });
         }
 
-        const TemplateLink: FC<T & ExtraProps> = props => {
+        const TemplateLink: React.FC<T & ExtraProps> = props => {
             const {
                 blank,
                 external,
