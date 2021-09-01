@@ -37,9 +37,7 @@ const {Link, createLink} = createFactory(options);
 
 `Link` or `TemplatedLink` accepts some props listed below:
 
-`{boolean} props.blank`: Whether link opens in a new window.
-
-`{boolean} props.external`: Whether link is external.
+`{boolean} props.blank`: Whether link opens in a new window. An external link will always open in a new window, which is determined by isExternal option.
 
 `isActive, activeClassName, activeStyle`: Same as react-router-dom.
 

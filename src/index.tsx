@@ -7,8 +7,6 @@ type PickedProps = Pick<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'classNam
 interface ExtraProps extends PickedProps {
     /* 开启新窗口 */
     blank?: boolean;
-    /** @deprecated auto figured */
-    external?: boolean;
     hash?: string;
     activeClassName?: string;
     activeStyle?: React.CSSProperties;
@@ -18,8 +16,6 @@ interface ExtraProps extends PickedProps {
 interface LinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
     /* 开启新窗口 */
     blank?: boolean;
-    /** @deprecated auto figured */
-    external?: boolean;
     to?: string;
     activeClassName?: string;
     activeStyle?: React.CSSProperties;
@@ -62,12 +58,13 @@ const createFactory = (options: FactoryParams = {}) => {
     const Link: React.FC<LinkProps> = props => {
         const history = useHistory();
 
-        const {blank, to, external: propsExternal, ...restProps} = props;
+        const {blank, to, ...restProps} = props;
         // 某些 props 不能透传 a 标签
         const restDomProps: any = omit(restProps, ['isActive', 'activeClassName', 'activeStyle']);
 
+        // 某些组件并没有对应的 Router
         const primitive = !history;
-        const external = propsExternal === undefined ? isExternal(to) : propsExternal;
+        const external = isExternal(to);
 
         if (blank) {
             restProps.target = '_blank';
@@ -116,7 +113,6 @@ const createFactory = (options: FactoryParams = {}) => {
         const TemplateLink: React.FC<T & ExtraProps> = props => {
             const {
                 blank,
-                external,
                 hash,
                 className,
                 style,
@@ -140,7 +136,6 @@ const createFactory = (options: FactoryParams = {}) => {
                 <Link
                     to={url}
                     blank={blank}
-                    external={external}
                     className={className}
                     style={style}
                     onClick={onClick}
