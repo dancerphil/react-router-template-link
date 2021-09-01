@@ -37,16 +37,10 @@ const {Link, createLink} = createFactory(options);
 
 `Link` or `TemplatedLink` accepts some props listed below:
 
-`{boolean} props.blank`: Whether link opens in a new window. An external link will always open in a new window, which is determined by isExternal option.
+`{boolean} props.blank`: Whether link opens in a new window. An external link will always open in a new window, which is determined by `isExternal` option.
 
-`isActive, activeClassName, activeStyle`: Same as react-router-dom.
+`isActive, activeClassName, activeStyle`: Same as `react-router-dom`.
 
 `className, style, onClick`: Same as `a` element.
 
 `hash`: Add hash to TemplatedLink.
-
-> What's the difference between external & blank?
-> 
-> An external link uses absolute address as default, but a blank link may use relative address based on basename.
-> 
-> An external link is always a blank link.
