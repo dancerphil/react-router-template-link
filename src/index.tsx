@@ -1,31 +1,23 @@
 import * as React from 'react';
-import {NavLink as RouterLink, NavLinkProps, useHistory} from 'react-router-dom';
+import {NavLink as RouterLink, NavLinkProps, To, useNavigate} from 'react-router-dom';
 import * as queryString from 'query-string';
 
-type PickedProps = Pick<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'className' | 'style' | 'onClick'>;
-
-interface ExtraProps extends PickedProps {
+interface ExtraProps extends NavLinkProps {
     /* 开启新窗口 */
     blank?: boolean;
     hash?: string;
-    activeClassName?: string;
-    activeStyle?: React.CSSProperties;
-    isActive?: NavLinkProps['isActive'];
 }
 
-interface LinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
+interface LinkProps extends Omit<NavLinkProps, 'to'> {
     /* 开启新窗口 */
     blank?: boolean;
-    to?: string;
-    activeClassName?: string;
-    activeStyle?: React.CSSProperties;
-    isActive?: NavLinkProps['isActive'];
+    to?: To;
 }
 
 interface FactoryParams {
     basename?: string;
     interpolate?: RegExp;
-    isExternal?: (to?: string) => boolean;
+    isExternal?: (to?: To) => boolean;
     encodePathVariable?: boolean;
 }
 
@@ -38,8 +30,11 @@ const omit = (object: any, paths: string[]) => {
     return result;
 };
 
-const isExternalDefault = (to?: string) => {
+const isExternalDefault = (to?: To) => {
     if (!to) {
+        return false;
+    }
+    if(typeof to !== 'string') {
         return false;
     }
     return to.includes('://') || /^mailto:.*@/.test(to);
@@ -55,43 +50,41 @@ const createFactory = (options: FactoryParams = {}) => {
         encodePathVariable = false,
     } = options;
 
-    const Link: React.FC<LinkProps> = props => {
-        const history = useHistory();
+    function Link(props: LinkProps) {
+        const history = useNavigate();
 
         const {blank, to, ...restProps} = props;
-        // 某些 props 不能透传 a 标签
-        const restDomProps: any = omit(restProps, ['isActive', 'activeClassName', 'activeStyle']);
 
         // 某些组件并没有对应的 Router
         const primitive = !history;
         const external = isExternal(to);
 
-        if (blank) {
+        if (blank || external) {
             restProps.target = '_blank';
             restProps.rel = 'noopener noreferrer';
-            restDomProps.target = '_blank';
-            restDomProps.rel = 'noopener noreferrer';
         }
 
-        if (external) {
-            restDomProps.target = '_blank';
-            restDomProps.rel = 'noopener noreferrer';
+        if (to && !external && !primitive) {
+            return <RouterLink to={to} {...restProps} />;
         }
 
-        if (!to) {
+        const {className, style, ...restDomProps} = restProps;
+        const href = typeof to === 'string' ? to : to?.pathname ?? '';
+
+        if (!href) {
             return <a {...restDomProps} />;
         }
 
         if (external) {
-            return <a href={to} {...restDomProps} />;
+            return <a href={href} {...restDomProps} />;
         }
 
         if (primitive) {
-            return <a href={`${basename}${to}`} {...restDomProps} />;
+            return <a href={`${basename}${href}`} {...restDomProps} />;
         }
 
-        return <RouterLink to={to} {...restProps} />;
-    };
+        return <a href={href} {...restDomProps} />;
+    }
 
     function createLink<T>(urlTemplate: string, initialProps?: Partial<T> & ExtraProps): React.FC<T & ExtraProps> {
 
@@ -110,15 +103,12 @@ const createFactory = (options: FactoryParams = {}) => {
             });
         }
 
-        const TemplateLink: React.FC<T & ExtraProps> = props => {
+        function TemplateLink(props: T & ExtraProps) {
             const {
                 blank,
                 hash,
                 className,
                 style,
-                isActive,
-                activeClassName,
-                activeStyle,
                 onClick,
                 children,
                 ...rest
@@ -139,14 +129,11 @@ const createFactory = (options: FactoryParams = {}) => {
                     className={className}
                     style={style}
                     onClick={onClick}
-                    isActive={isActive}
-                    activeClassName={activeClassName}
-                    activeStyle={activeStyle}
                 >
                     {children}
                 </Link>
             );
-        };
+        }
         return TemplateLink;
     }
     return {Link, createLink};
