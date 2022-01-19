@@ -31,16 +31,16 @@ const {Link, createLink} = createFactory(options);
 
 `{function} options.isExternal`: An function to tell whether the link is external or not. Default as `when to.includes('://'') || to.startsWith('mailto:')`
 
-`{boolean} options.encodePathVariable`: Configure whether pathVariable should be encoded.
+`{boolean} options.encodePathVariable`: Configure whether pathVariable should be encoded. Default as `false`
 
 ## props
 
 `Link` or `TemplatedLink` accepts some props listed below:
 
-`{boolean} props.blank`: Whether link opens in a new window. An external link will always open in a new window, which is determined by `isExternal` option.
+`{boolean} blank`: Whether link opens in a new window. An external link will always open in a new window, which is determined by `isExternal` option.
 
-`isActive, activeClassName, activeStyle`: Same as `react-router-dom`.
+`className, style, children`: Same as `react-router-dom`, When link is external, `isActive` will be considered as `false`.
 
-`className, style, onClick`: Same as `a` element.
+`onClick, & others`: Same as `a`.
 
-`hash`: Add hash to TemplatedLink.
+`{string} hash`: Add hash to TemplatedLink.

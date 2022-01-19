@@ -40,6 +40,49 @@ const isExternalDefault = (to?: To) => {
     return to.includes('://') || /^mailto:.*@/.test(to);
 };
 
+const getDomHref = (to?: To) => {
+    if (!to) {
+        return '';
+    }
+    if (typeof to === 'string') {
+        return to;
+    }
+    return to.pathname
+};
+
+const getDomClassName = (className?: NavLinkProps['className']) => {
+    if (!className) {
+        return '';
+    }
+    if (typeof className === 'function') {
+        return className({isActive: false});
+    }
+    if (typeof className === 'string') {
+        return className;
+    }
+    return '';
+};
+
+const getDomStyle = (style?: NavLinkProps['style']) => {
+    if (!style) {
+        return {};
+    }
+    if (typeof style === 'function') {
+        return style({isActive: false});
+    }
+    return style;
+};
+
+const getDomChildren = (children?: NavLinkProps['children']) => {
+    if (!children) {
+        return '';
+    }
+    if (typeof children === 'function') {
+        return children({isActive: false});
+    }
+    return children;
+};
+
 // NOTE add an option to config picked dom props
 // it is a bit difficult to deal with type
 const createFactory = (options: FactoryParams = {}) => {
@@ -68,22 +111,20 @@ const createFactory = (options: FactoryParams = {}) => {
             return <RouterLink to={to} {...restProps} />;
         }
 
-        const {className, style, ...restDomProps} = restProps;
-        const href = typeof to === 'string' ? to : to?.pathname ?? '';
+        const {className, style, children, ...restDomProps} = restProps;
+        const href = getDomHref(to);
+        const domClassName = getDomClassName(className);
+        const domStyle = getDomStyle(style);
+        const domChildren = getDomChildren(children);
+        const domProps = {
+            href: primitive ? `${basename}${href}`: href,
+            className: domClassName,
+            style: domStyle,
+            children: domChildren,
+            ...restDomProps
+        };
 
-        if (!href) {
-            return <a {...restDomProps} />;
-        }
-
-        if (external) {
-            return <a href={href} {...restDomProps} />;
-        }
-
-        if (primitive) {
-            return <a href={`${basename}${href}`} {...restDomProps} />;
-        }
-
-        return <a href={href} {...restDomProps} />;
+        return <a {...domProps} />;
     }
 
     function createLink<T>(urlTemplate: string, initialProps?: Partial<T> & ExtraProps): React.FC<T & ExtraProps> {
