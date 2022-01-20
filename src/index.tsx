@@ -2,15 +2,10 @@ import * as React from 'react';
 import {NavLink as RouterLink, NavLinkProps, To, useNavigate} from 'react-router-dom';
 import * as queryString from 'query-string';
 
-interface ExtraProps extends NavLinkProps {
-    /* 开启新窗口 */
-    blank?: boolean;
-    hash?: string;
-}
-
 interface LinkProps extends Omit<NavLinkProps, 'to'> {
     /* 开启新窗口 */
     blank?: boolean;
+    hash?: string;
     to?: To;
 }
 
@@ -127,7 +122,7 @@ const createFactory = (options: FactoryParams = {}) => {
         return <a {...domProps} />;
     }
 
-    function createLink<T>(urlTemplate: string, initialProps?: Partial<T> | ExtraProps): React.FC<T | ExtraProps> {
+    function createLink<T>(urlTemplate: string, initialProps?: Partial<T & LinkProps>): React.FC<T & LinkProps> {
 
         type ToUrl = (variables: T) => string;
         let toQuery = (value: T) => value;
@@ -144,7 +139,7 @@ const createFactory = (options: FactoryParams = {}) => {
             });
         }
 
-        function TemplateLink(props: T | ExtraProps) {
+        function TemplateLink(props: T & LinkProps) {
             const {
                 blank,
                 hash,
@@ -153,7 +148,7 @@ const createFactory = (options: FactoryParams = {}) => {
                 onClick,
                 children,
                 ...rest
-            } = {...initialProps, ...props} as T & ExtraProps;
+            } = {...initialProps, ...props};
 
             const t = rest as T;
             const query = toQuery(t);
