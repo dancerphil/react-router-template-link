@@ -127,10 +127,10 @@ const createFactory = (options: FactoryParams = {}) => {
         return <a {...domProps} />;
     }
 
-    function createLink<T>(urlTemplate: string, initialProps?: Partial<T> & ExtraProps): React.FC<T & ExtraProps> {
+    function createLink<T>(urlTemplate: string, initialProps?: Partial<T> | ExtraProps): React.FC<T | ExtraProps> {
 
         type ToUrl = (variables: T) => string;
-        let toQuery = (value: any) => value;
+        let toQuery = (value: T) => value;
         let toUrl: ToUrl = () => urlTemplate;
         // eslint-disable-next-line @typescript-eslint/prefer-regexp-exec
         const variablesInTemplate = urlTemplate.match(interpolate);
@@ -144,7 +144,7 @@ const createFactory = (options: FactoryParams = {}) => {
             });
         }
 
-        function TemplateLink(props: T & ExtraProps) {
+        function TemplateLink(props: T | ExtraProps) {
             const {
                 blank,
                 hash,
@@ -153,9 +153,9 @@ const createFactory = (options: FactoryParams = {}) => {
                 onClick,
                 children,
                 ...rest
-            } = {...initialProps, ...props};
+            } = {...initialProps, ...props} as T & ExtraProps;
 
-            const t: any = rest as unknown as T;
+            const t = rest as T;
             const query = toQuery(t);
             const urlPrefix = toUrl(t);
             const search = queryString.stringify(query);
