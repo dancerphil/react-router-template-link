@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
 import * as queryString from 'query-string';
-// {NavLink as RouterLink, NavLinkProps, To, useNavigate}
+
 interface LinkProps extends Omit<ReactRouter.NavLinkProps, 'to'> {
     /* 开启新窗口 */
     blank?: boolean;
@@ -29,7 +29,7 @@ const isExternalDefault = (to?: ReactRouter.To) => {
     if (!to) {
         return false;
     }
-    if(typeof to !== 'string') {
+    if (typeof to !== 'string') {
         return false;
     }
     return to.includes('://') || /^mailto:.*@/.test(to);
@@ -78,8 +78,10 @@ const getDomChildren = (children?: ReactRouter.NavLinkProps['children']) => {
     return children;
 };
 
-// @ts-ignore
-const useInRouterContext = ReactRouter.useInRouterContext ??  ReactRouter.useHistory;
+// 兼容 react-router@5，对新版本不做处理
+const legacyHookKey = 'useHistory0'.slice(0, -1) as 'useInRouterContext';
+
+const useInRouterContext = ReactRouter.useInRouterContext ??  ReactRouter[legacyHookKey];
 
 // NOTE add an option to config picked dom props
 // it is a bit difficult to deal with type
