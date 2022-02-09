@@ -1,18 +1,18 @@
 import * as React from 'react';
-import {NavLink as RouterLink, NavLinkProps, To, useNavigate} from 'react-router-dom';
+import * as ReactRouter from 'react-router-dom';
 import * as queryString from 'query-string';
-
-interface LinkProps extends Omit<NavLinkProps, 'to'> {
+// {NavLink as RouterLink, NavLinkProps, To, useNavigate}
+interface LinkProps extends Omit<ReactRouter.NavLinkProps, 'to'> {
     /* 开启新窗口 */
     blank?: boolean;
     hash?: string;
-    to?: To;
+    to?: ReactRouter.To;
 }
 
 interface FactoryParams {
     basename?: string;
     interpolate?: RegExp;
-    isExternal?: (to?: To) => boolean;
+    isExternal?: (to?: ReactRouter.To) => boolean;
     encodePathVariable?: boolean;
 }
 
@@ -25,7 +25,7 @@ const omit = (object: any, paths: string[]) => {
     return result;
 };
 
-const isExternalDefault = (to?: To) => {
+const isExternalDefault = (to?: ReactRouter.To) => {
     if (!to) {
         return false;
     }
@@ -35,7 +35,7 @@ const isExternalDefault = (to?: To) => {
     return to.includes('://') || /^mailto:.*@/.test(to);
 };
 
-const getDomHref = (to?: To) => {
+const getDomHref = (to?: ReactRouter.To) => {
     if (!to) {
         return '';
     }
@@ -45,7 +45,7 @@ const getDomHref = (to?: To) => {
     return to.pathname
 };
 
-const getDomClassName = (className?: NavLinkProps['className']) => {
+const getDomClassName = (className?: ReactRouter.NavLinkProps['className']) => {
     if (!className) {
         return '';
     }
@@ -58,7 +58,7 @@ const getDomClassName = (className?: NavLinkProps['className']) => {
     return '';
 };
 
-const getDomStyle = (style?: NavLinkProps['style']) => {
+const getDomStyle = (style?: ReactRouter.NavLinkProps['style']) => {
     if (!style) {
         return {};
     }
@@ -68,7 +68,7 @@ const getDomStyle = (style?: NavLinkProps['style']) => {
     return style;
 };
 
-const getDomChildren = (children?: NavLinkProps['children']) => {
+const getDomChildren = (children?: ReactRouter.NavLinkProps['children']) => {
     if (!children) {
         return '';
     }
@@ -77,6 +77,9 @@ const getDomChildren = (children?: NavLinkProps['children']) => {
     }
     return children;
 };
+
+// @ts-ignore
+const useInRouterContext = ReactRouter.useInRouterContext ??  ReactRouter.useHistory;
 
 // NOTE add an option to config picked dom props
 // it is a bit difficult to deal with type
@@ -89,12 +92,11 @@ const createFactory = (options: FactoryParams = {}) => {
     } = options;
 
     function Link(props: LinkProps) {
-        const history = useNavigate();
+        // 某些组件并没有对应的 Router
+        const inRouterContext = useInRouterContext();
 
         const {blank, to, ...restProps} = props;
 
-        // 某些组件并没有对应的 Router
-        const primitive = !history;
         const external = isExternal(to);
 
         if (blank || external) {
@@ -102,8 +104,8 @@ const createFactory = (options: FactoryParams = {}) => {
             restProps.rel = 'noopener noreferrer';
         }
 
-        if (to && !external && !primitive) {
-            return <RouterLink to={to} {...restProps} />;
+        if (to && !external && inRouterContext) {
+            return <ReactRouter.NavLink to={to} {...restProps} />;
         }
 
         const {className, style, children, ...restDomProps} = restProps;
@@ -112,7 +114,7 @@ const createFactory = (options: FactoryParams = {}) => {
         const domStyle = getDomStyle(style);
         const domChildren = getDomChildren(children);
         const domProps = {
-            href: primitive ? `${basename}${href}`: href,
+            href: inRouterContext ? href: `${basename}${href}`,
             className: domClassName,
             style: domStyle,
             children: domChildren,
