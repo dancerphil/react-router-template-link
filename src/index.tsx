@@ -2,6 +2,9 @@ import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
 import * as queryString from 'query-string';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Any = any;
+
 interface LinkProps extends Omit<ReactRouter.NavLinkProps, 'to'> {
     /* 开启新窗口 */
     blank?: boolean;
@@ -16,7 +19,7 @@ interface FactoryParams {
     encodePathVariable?: boolean;
 }
 
-const omit = (object: any, paths: string[]) => {
+const omit = (object: Any, paths: string[]) => {
     // 总是返回新对象
     const result = {...object};
     paths.forEach(path => {
@@ -42,7 +45,7 @@ const getDomHref = (to?: ReactRouter.To) => {
     if (typeof to === 'string') {
         return to;
     }
-    return to.pathname
+    return to.pathname;
 };
 
 const getDomClassName = (className?: ReactRouter.NavLinkProps['className']) => {
@@ -60,7 +63,7 @@ const getDomClassName = (className?: ReactRouter.NavLinkProps['className']) => {
 
 const getDomStyle = (style?: ReactRouter.NavLinkProps['style']) => {
     if (!style) {
-        return {};
+        return undefined;
     }
     if (typeof style === 'function') {
         return style({isActive: false});
@@ -81,7 +84,7 @@ const getDomChildren = (children?: ReactRouter.NavLinkProps['children']) => {
 // 兼容 react-router@5，对新版本不做处理
 const legacyHookKey = 'useHistory0'.slice(0, -1) as 'useInRouterContext';
 
-const useInRouterContext = ReactRouter.useInRouterContext ??  ReactRouter[legacyHookKey];
+const useInRouterContext = ReactRouter.useInRouterContext ?? ReactRouter[legacyHookKey];
 
 // NOTE add an option to config picked dom props
 // it is a bit difficult to deal with type
@@ -116,11 +119,11 @@ const createFactory = (options: FactoryParams = {}) => {
         const domStyle = getDomStyle(style);
         const domChildren = getDomChildren(children);
         const domProps = {
-            href: external ? href: `${basename}${href}`,
+            href: external ? href : `${basename}${href}`,
             className: domClassName,
             style: domStyle,
             children: domChildren,
-            ...restDomProps
+            ...restDomProps,
         };
 
         return <a {...domProps} />;
@@ -138,7 +141,8 @@ const createFactory = (options: FactoryParams = {}) => {
             const templateKeys = variablesInTemplate.map(s => s.slice(1, -1));
             toQuery = variables => omit(variables, templateKeys);
             toUrl = variables => urlTemplate.replace(interpolate, (match, name) => {
-                const variable = (variables as any)[name];
+                // @ts-expect-error
+                const variable = variables[name];
                 return encodePathVariable ? encodeURIComponent(variable) : variable;
             });
         }

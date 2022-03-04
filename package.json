@@ -13,6 +13,8 @@
   "scripts": {
     "build": "rm -rf lib/ && tsc",
     "build-es": "rm -rf es/ && tsc --project tsconfig.es.json",
+    "lint": "skr lint",
+    "test": "skr test -- --coverage",
     "prepublishOnly": "yarn build && yarn build-es"
   },
   "repository": {
@@ -26,12 +28,26 @@
     "react-router-dom": ">=6"
   },
   "dependencies": {
-    "query-string": "^6.14.1"
+    "query-string": "^7.1.1"
   },
   "devDependencies": {
+    "@reskript/cli": "^4.2.1",
+    "@reskript/cli-lint": "^4.2.1",
+    "@reskript/cli-test": "^4.2.1",
+    "@reskript/config-jest": "^4.2.1",
+    "@reskript/config-lint": "^4.2.1",
+    "@testing-library/jest-dom": "^5.16.2",
+    "@testing-library/react": "^13.0.0-alpha.5",
+    "@testing-library/react-hooks": "^7.0.2",
+    "@types/jest": "^27.4.1",
     "@types/react": "^17.0.38",
+    "core-js": "^3.21.1",
+    "eslint": "^8.10.0",
     "react": "^18.0.0-rc.0",
+    "react-dom": "^18.0.0-rc.1",
     "react-router-dom": "^6.2.1",
-    "typescript": "^4.5.4"
+    "react-test-renderer": "^18.0.0-rc.1",
+    "stylelint": "^14.5.3",
+    "typescript": "^4.6.2"
   }
 }

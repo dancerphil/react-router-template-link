@@ -2,6 +2,7 @@
 
 [![version](https://img.shields.io/npm/v/react-router-template-link.svg?style=flat-square)](http://npm.im/react-router-template-link)
 [![npm downloads](https://img.shields.io/npm/dm/react-router-template-link.svg?style=flat-square)](https://www.npmjs.com/package/react-router-template-link)
+[![codecov](https://img.shields.io/codecov/c/gh/dancerphil/react-router-template-link)](https://codecov.io/gh/dancerphil/react-router-template-link)
 [![MIT License](https://img.shields.io/npm/l/react-router-template-link.svg?style=flat-square)](http://opensource.org/licenses/MIT)
 
 An intelligent link component above `<a>` element and `<NavLink>` from `react-router`. Also, it allows you to create link component from url template with type inference.

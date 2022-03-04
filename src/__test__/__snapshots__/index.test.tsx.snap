@@ -1,0 +1,323 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createFactory Link 1`] = `
+<a
+  className=""
+  href="/"
+>
+  text
+</a>
+`;
+
+exports[`createFactory createLink 1`] = `
+<a
+  className=""
+  href="/"
+>
+  text
+</a>
+`;
+
+exports[`createFactory createLink 2`] = `
+<a
+  aria-current="page"
+  className="active"
+  href="/"
+  onClick={[Function]}
+>
+  text
+</a>
+`;
+
+exports[`createFactory explicit query 1`] = `
+<a
+  className=""
+  href="/users/danceprhil?from=file"
+>
+  text
+</a>
+`;
+
+exports[`createFactory explicit query 2`] = `
+<a
+  className=""
+  href="/users/danceprhil?from=file"
+  onClick={[Function]}
+>
+  text
+</a>
+`;
+
+exports[`createFactory external 1`] = `
+<a
+  className=""
+  href="https://example.com"
+  rel="noopener noreferrer"
+  target="_blank"
+>
+  text
+</a>
+`;
+
+exports[`createFactory external 2`] = `
+<a
+  className=""
+  href="https://example.com"
+  rel="noopener noreferrer"
+  target="_blank"
+>
+  text
+</a>
+`;
+
+exports[`createFactory hash 1`] = `
+<a
+  className=""
+  href="/#1"
+>
+  text
+</a>
+`;
+
+exports[`createFactory hash 2`] = `
+<a
+  aria-current="page"
+  className="active"
+  href="/#1"
+  onClick={[Function]}
+>
+  text
+</a>
+`;
+
+exports[`createFactory query 1`] = `
+<a
+  className=""
+  href="/users/danceprhil?from=file"
+>
+  text
+</a>
+`;
+
+exports[`createFactory query 2`] = `
+<a
+  className=""
+  href="/users/danceprhil?from=file"
+  onClick={[Function]}
+>
+  text
+</a>
+`;
+
+exports[`createFactory react-router-dom children props 1`] = `
+<a
+  className=""
+  href="/"
+>
+  text
+</a>
+`;
+
+exports[`createFactory react-router-dom children props 2`] = `
+<a
+  aria-current="page"
+  className="active"
+  href="/"
+  onClick={[Function]}
+>
+  text
+</a>
+`;
+
+exports[`createFactory react-router-dom children props 3`] = `
+<a
+  className=""
+  href="/"
+/>
+`;
+
+exports[`createFactory react-router-dom children props 4`] = `
+<a
+  aria-current="page"
+  className="active"
+  href="/"
+  onClick={[Function]}
+/>
+`;
+
+exports[`createFactory react-router-dom className props 1`] = `
+<a
+  className="class1"
+  href="/"
+>
+  text
+</a>
+`;
+
+exports[`createFactory react-router-dom className props 2`] = `
+<a
+  aria-current="page"
+  className="class1 active"
+  href="/"
+  onClick={[Function]}
+>
+  text
+</a>
+`;
+
+exports[`createFactory react-router-dom className props 3`] = `
+<a
+  className="class2"
+  href="/"
+>
+  text
+</a>
+`;
+
+exports[`createFactory react-router-dom className props 4`] = `
+<a
+  aria-current="page"
+  className="class2"
+  href="/"
+  onClick={[Function]}
+>
+  text
+</a>
+`;
+
+exports[`createFactory react-router-dom className props 5`] = `
+<a
+  className=""
+  href="/"
+>
+  text
+</a>
+`;
+
+exports[`createFactory react-router-dom className props 6`] = `
+<a
+  aria-current="page"
+  className="[object Object] active"
+  href="/"
+  onClick={[Function]}
+>
+  text
+</a>
+`;
+
+exports[`createFactory react-router-dom style props 1`] = `
+<a
+  className=""
+  href="/"
+  style={
+    Object {
+      "color": "pink",
+    }
+  }
+>
+  text
+</a>
+`;
+
+exports[`createFactory react-router-dom style props 2`] = `
+<a
+  aria-current="page"
+  className="active"
+  href="/"
+  onClick={[Function]}
+  style={
+    Object {
+      "color": "pink",
+    }
+  }
+>
+  text
+</a>
+`;
+
+exports[`createFactory react-router-dom style props 3`] = `
+<a
+  className=""
+  href="/"
+  style={
+    Object {
+      "color": "hotpink",
+    }
+  }
+>
+  text
+</a>
+`;
+
+exports[`createFactory react-router-dom style props 4`] = `
+<a
+  aria-current="page"
+  className="active"
+  href="/"
+  onClick={[Function]}
+  style={
+    Object {
+      "color": "hotpink",
+    }
+  }
+>
+  text
+</a>
+`;
+
+exports[`createFactory react-router-dom to props 1`] = `
+<a
+  className=""
+  href=""
+>
+  text
+</a>
+`;
+
+exports[`createFactory react-router-dom to props 2`] = `
+<a
+  className=""
+  href=""
+>
+  text
+</a>
+`;
+
+exports[`createFactory react-router-dom to props 3`] = `
+<a
+  className=""
+  href="/"
+>
+  text
+</a>
+`;
+
+exports[`createFactory react-router-dom to props 4`] = `
+<a
+  aria-current="page"
+  className="active"
+  href="/"
+  onClick={[Function]}
+>
+  text
+</a>
+`;
+
+exports[`createFactory template 1`] = `
+<a
+  className=""
+  href="/users/danceprhil"
+>
+  text
+</a>
+`;
+
+exports[`createFactory template 2`] = `
+<a
+  className=""
+  href="/users/danceprhil"
+  onClick={[Function]}
+>
+  text
+</a>
+`;
