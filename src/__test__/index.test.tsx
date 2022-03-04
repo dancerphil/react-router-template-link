@@ -50,6 +50,29 @@ describe('createFactory', () => {
         expect(create(<BrowserRouter>{link}</BrowserRouter>)).toMatchSnapshot();
     });
 
+    test('combined query', () => {
+        interface Params {
+            userId: string;
+            from: string;
+            type: string;
+        }
+        const UserLink = createLink<Params>('/users/{userId}?from={from}');
+        const link = <UserLink userId="danceprhil" from="file" type="a">text</UserLink>;
+        expect(create(link)).toMatchSnapshot();
+        expect(create(<BrowserRouter>{link}</BrowserRouter>)).toMatchSnapshot();
+    });
+
+    test('encodePathVariable', () => {
+        const {createLink} = createFactory({encodePathVariable: true});
+        interface Params {
+            userId: string;
+        }
+        const UserLink = createLink<Params>('/users/{userId}');
+        const link = <UserLink userId="a/b">text</UserLink>;
+        expect(create(link)).toMatchSnapshot();
+        expect(create(<BrowserRouter>{link}</BrowserRouter>)).toMatchSnapshot();
+    });
+
     test('hash', () => {
         const HomeLink = createLink('/');
         const link = <HomeLink hash="1">text</HomeLink>;

@@ -9,6 +9,25 @@ exports[`createFactory Link 1`] = `
 </a>
 `;
 
+exports[`createFactory combined query 1`] = `
+<a
+  className=""
+  href="/users/danceprhil?from=file&type=a"
+>
+  text
+</a>
+`;
+
+exports[`createFactory combined query 2`] = `
+<a
+  className=""
+  href="/users/danceprhil?from=file&type=a"
+  onClick={[Function]}
+>
+  text
+</a>
+`;
+
 exports[`createFactory createLink 1`] = `
 <a
   className=""
@@ -23,6 +42,25 @@ exports[`createFactory createLink 2`] = `
   aria-current="page"
   className="active"
   href="/"
+  onClick={[Function]}
+>
+  text
+</a>
+`;
+
+exports[`createFactory encodePathVariable 1`] = `
+<a
+  className=""
+  href="/users/a%2Fb"
+>
+  text
+</a>
+`;
+
+exports[`createFactory encodePathVariable 2`] = `
+<a
+  className=""
+  href="/users/a%2Fb"
   onClick={[Function]}
 >
   text

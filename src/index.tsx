@@ -84,6 +84,7 @@ const getDomChildren = (children?: ReactRouter.NavLinkProps['children']) => {
 // 兼容 react-router@5，对新版本不做处理
 const legacyHookKey = 'useHistory0'.slice(0, -1) as 'useInRouterContext';
 
+// istanbul ignore next
 const useInRouterContext = ReactRouter.useInRouterContext ?? ReactRouter[legacyHookKey];
 
 // NOTE add an option to config picked dom props
