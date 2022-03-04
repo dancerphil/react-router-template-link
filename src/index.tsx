@@ -116,7 +116,7 @@ const createFactory = (options: FactoryParams = {}) => {
         const domStyle = getDomStyle(style);
         const domChildren = getDomChildren(children);
         const domProps = {
-            href: inRouterContext ? href: `${basename}${href}`,
+            href: external ? href: `${basename}${href}`,
             className: domClassName,
             style: domStyle,
             children: domChildren,
