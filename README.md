@@ -40,6 +40,8 @@ const {Link, createLink} = createFactory(options);
 
 `{boolean} options.encodePathVariable`: Configure whether pathVariable should be encoded. Such as encode `a/b` to `a%2fb`. Default as `false`
 
+`{ReactNode} options.externalIcon`: Show Icon when link is external. Default as `null`
+
 ## props
 
 `Link` or `TemplatedLink` accepts some props listed below:

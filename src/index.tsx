@@ -17,6 +17,7 @@ interface FactoryParams {
     interpolate?: RegExp;
     isExternal?: (to?: ReactRouter.To) => boolean;
     encodePathVariable?: boolean;
+    externalIcon?: React.ReactNode;
 }
 
 const omit = (object: Any, paths: string[]) => {
@@ -95,6 +96,7 @@ const createFactory = (options: FactoryParams = {}) => {
         interpolate = /{(\w+)}/g,
         isExternal = isExternalDefault,
         encodePathVariable = false,
+        externalIcon = null,
     } = options;
 
     function Link(props: LinkProps) {
@@ -123,7 +125,7 @@ const createFactory = (options: FactoryParams = {}) => {
             href: external ? href : `${basename}${href}`,
             className: domClassName,
             style: domStyle,
-            children: domChildren,
+            children: external ? <>{domChildren}{externalIcon}</> : domChildren,
             ...restDomProps,
         };
 
