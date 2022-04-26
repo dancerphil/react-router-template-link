@@ -12,14 +12,18 @@ import {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Any = any;
 
-interface LinkProps extends Omit<ReactRouter.NavLinkProps, 'to'> {
+// as id is widely used, we omit it
+interface LinkProps extends Pick<ReactRouter.NavLinkProps, 'to' | 'className' | 'style' | 'onClick' | 'children'> {
     /* 开启新窗口 */
     blank?: boolean;
     hash?: string;
-    to?: ReactRouter.To;
     disableExternalIcon?: boolean;
     linkType?: 'text' | 'default' | 'none';
 }
+
+type TemplateLinkProps = Omit<LinkProps, 'to'>;
+
+type MixTemplateLinkProps<T> = T extends object ? (T & TemplateLinkProps) : TemplateLinkProps;
 
 interface FactoryParams {
     basename?: string;
@@ -126,15 +130,18 @@ const createFactory = (options: FactoryParams = {}) => {
 
         const external = isExternal(to);
 
+        let blankProps = {};
         if (blank || external) {
-            restProps.target = '_blank';
-            restProps.rel = 'noopener noreferrer';
+            blankProps = {
+                target: '_blank',
+                rel: 'noopener noreferrer',
+            };
         }
 
         const className = getClassName(propClassName, {prefixCls, linkType});
 
         if (to && !external && inRouterContext) {
-            return <ReactRouter.NavLink to={to} className={className} {...restProps} />;
+            return <ReactRouter.NavLink to={to} className={className} {...blankProps} {...restProps} />;
         }
 
         const {style, children, ...restDomProps} = restProps;
@@ -148,6 +155,7 @@ const createFactory = (options: FactoryParams = {}) => {
             className: compatibleClassName,
             style: compatibleStyle,
             children: domChildren,
+            ...blankProps,
             ...restDomProps,
         };
 
@@ -155,7 +163,7 @@ const createFactory = (options: FactoryParams = {}) => {
     }
 
     // eslint-disable-next-line max-len
-    function createLink<T>(urlTemplate: string, initialProps?: Partial<T & LinkProps>): React.FC<T & LinkProps> & {toUrl: (params: T, options?: ToUrlOptions) => string} {
+    function createLink<T = void>(urlTemplate: string, initialProps?: Partial<MixTemplateLinkProps<T>>): React.FC<MixTemplateLinkProps<T>> & {toUrl: (params: T, options?: ToUrlOptions) => string} {
 
         const toUrl = (params: T, options?: ToUrlOptions): string => {
             const {hash = ''} = options ?? {};
@@ -187,7 +195,7 @@ const createFactory = (options: FactoryParams = {}) => {
             }
         };
 
-        function TemplateLink(props: T & LinkProps) {
+        function TemplateLink(props: MixTemplateLinkProps<T>) {
             const {
                 blank,
                 hash,
@@ -195,6 +203,8 @@ const createFactory = (options: FactoryParams = {}) => {
                 style,
                 onClick,
                 children,
+                linkType,
+                disableExternalIcon,
                 ...rest
             } = {...initialProps, ...props};
 
@@ -207,6 +217,8 @@ const createFactory = (options: FactoryParams = {}) => {
                     className={className}
                     style={style}
                     onClick={onClick}
+                    linkType={linkType}
+                    disableExternalIcon={disableExternalIcon}
                 >
                     {children}
                 </Link>
