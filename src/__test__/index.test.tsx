@@ -57,7 +57,9 @@ describe('createFactory', () => {
             type: string;
         }
         const UserLink = createLink<Params>('/users/{userId}?from={from}');
+        const url = UserLink.toUrl({userId: 'danceprhil', from: 'file', type: 'a'});
         const link = <UserLink userId="danceprhil" from="file" type="a">text</UserLink>;
+        expect(url).toBe('/users/danceprhil?from=file&type=a');
         expect(create(link)).toMatchSnapshot();
         expect(create(<BrowserRouter>{link}</BrowserRouter>)).toMatchSnapshot();
     });

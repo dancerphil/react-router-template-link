@@ -1,6 +1,13 @@
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
+import * as History from 'history';
 import * as queryString from 'query-string';
+import {
+    getCompatibleClassName,
+    getCompatibleHref,
+    getCompatibleStyle,
+    getCompatibleChildren,
+} from './react-router-compitable';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Any = any;
@@ -10,6 +17,8 @@ interface LinkProps extends Omit<ReactRouter.NavLinkProps, 'to'> {
     blank?: boolean;
     hash?: string;
     to?: ReactRouter.To;
+    disableExternalIcon?: boolean;
+    linkType?: 'text' | 'default' | 'none';
 }
 
 interface FactoryParams {
@@ -18,6 +27,11 @@ interface FactoryParams {
     isExternal?: (to?: ReactRouter.To) => boolean;
     encodePathVariable?: boolean;
     externalIcon?: React.ReactNode;
+    prefixCls?: string;
+}
+
+interface ToUrlOptions {
+    hash?: string;
 }
 
 const omit = (object: Any, paths: string[]) => {
@@ -39,47 +53,44 @@ const isExternalDefault = (to?: ReactRouter.To) => {
     return to.includes('://') || /^mailto:.*@/.test(to);
 };
 
-const getDomHref = (to?: ReactRouter.To) => {
-    if (!to) {
-        return '';
-    }
-    if (typeof to === 'string') {
-        return to;
-    }
-    return to.pathname;
-};
+interface ClassNameOptions {
+    prefixCls: string;
+    linkType: 'text' | 'default' | 'none';
+}
 
-const getDomClassName = (className?: ReactRouter.NavLinkProps['className']) => {
-    if (!className) {
-        return '';
-    }
+const getClassName = (className: ReactRouter.NavLinkProps['className'], options: ClassNameOptions) => {
+    const {prefixCls, linkType} = options;
+    const baseClassName = `${prefixCls} ${prefixCls}-${linkType}`;
     if (typeof className === 'function') {
-        return className({isActive: false});
+        return (params: {isActive: boolean}) => {
+            const result = className(params);
+            return `${baseClassName} ${result}`;
+        };
     }
     if (typeof className === 'string') {
-        return className;
+        return `${baseClassName} ${className}`;
     }
-    return '';
+    return baseClassName;
 };
 
-const getDomStyle = (style?: ReactRouter.NavLinkProps['style']) => {
-    if (!style) {
-        return undefined;
-    }
-    if (typeof style === 'function') {
-        return style({isActive: false});
-    }
-    return style;
-};
+interface DomChildrenOptions {
+    external: boolean;
+    disableExternalIcon: boolean;
+    externalIcon: React.ReactNode;
+}
 
-const getDomChildren = (children?: ReactRouter.NavLinkProps['children']) => {
-    if (!children) {
-        return '';
+const getDomChildren = (children: React.ReactNode, options: DomChildrenOptions) => {
+    const {external, disableExternalIcon, externalIcon} = options;
+    if (!external) {
+        return children;
     }
-    if (typeof children === 'function') {
-        return children({isActive: false});
+    if (disableExternalIcon) {
+        return children;
     }
-    return children;
+    if (externalIcon === null) {
+        return children;
+    }
+    return <>{children}{externalIcon}</>;
 };
 
 // 兼容 react-router@5，对新版本不做处理
@@ -97,13 +108,21 @@ const createFactory = (options: FactoryParams = {}) => {
         isExternal = isExternalDefault,
         encodePathVariable = false,
         externalIcon = null,
+        prefixCls = 'panda-link',
     } = options;
 
     function Link(props: LinkProps) {
         // 某些组件并没有对应的 Router
         const inRouterContext = useInRouterContext();
 
-        const {blank, to, ...restProps} = props;
+        const {
+            blank,
+            to,
+            linkType = 'default',
+            disableExternalIcon = false,
+            className: propClassName,
+            ...restProps
+        } = props;
 
         const external = isExternal(to);
 
@@ -112,43 +131,61 @@ const createFactory = (options: FactoryParams = {}) => {
             restProps.rel = 'noopener noreferrer';
         }
 
+        const className = getClassName(propClassName, {prefixCls, linkType});
+
         if (to && !external && inRouterContext) {
-            return <ReactRouter.NavLink to={to} {...restProps} />;
+            return <ReactRouter.NavLink to={to} className={className} {...restProps} />;
         }
 
-        const {className, style, children, ...restDomProps} = restProps;
-        const href = getDomHref(to);
-        const domClassName = getDomClassName(className);
-        const domStyle = getDomStyle(style);
-        const domChildren = getDomChildren(children);
+        const {style, children, ...restDomProps} = restProps;
+        const href = getCompatibleHref(to);
+        const compatibleClassName = getCompatibleClassName(className);
+        const compatibleStyle = getCompatibleStyle(style);
+        const compatibleChildren = getCompatibleChildren(children);
+        const domChildren = getDomChildren(compatibleChildren, {external, disableExternalIcon, externalIcon});
         const domProps = {
             href: external ? href : `${basename}${href}`,
-            className: domClassName,
-            style: domStyle,
-            children: external ? <>{domChildren}{externalIcon}</> : domChildren,
+            className: compatibleClassName,
+            style: compatibleStyle,
+            children: domChildren,
             ...restDomProps,
         };
 
         return <a {...domProps} />;
     }
 
-    function createLink<T>(urlTemplate: string, initialProps?: Partial<T & LinkProps>): React.FC<T & LinkProps> {
+    // eslint-disable-next-line max-len
+    function createLink<T>(urlTemplate: string, initialProps?: Partial<T & LinkProps>): React.FC<T & LinkProps> & {toUrl: (params: T, options?: ToUrlOptions) => string} {
 
-        type ToUrl = (variables: T) => string;
-        let toQuery = (value: T) => value;
-        let toUrl: ToUrl = () => urlTemplate;
-        // eslint-disable-next-line @typescript-eslint/prefer-regexp-exec
-        const variablesInTemplate = urlTemplate.match(interpolate);
-
-        if (variablesInTemplate) {
-            const templateKeys = variablesInTemplate.map(s => s.slice(1, -1));
-            toQuery = variables => omit(variables, templateKeys);
-            toUrl = variables => urlTemplate.replace(interpolate, (match, name) => {
-                // @ts-expect-error
-                const variable = variables[name];
-                return encodePathVariable ? encodeURIComponent(variable) : variable;
-            });
-        }
+        const toUrl = (params: T, options?: ToUrlOptions): string => {
+            const {hash = ''} = options ?? {};
+            const variablesInTemplate = urlTemplate.match(interpolate);
+            if (variablesInTemplate) {
+                const templateKeys = variablesInTemplate.map(s => s.slice(1, -1));
+                const queryBase = omit(params, templateKeys);
+                const pathnameBase = urlTemplate.replace(interpolate, (match, name) => {
+                    // @ts-expect-error
+                    const variable = params[name];
+                    return encodePathVariable ? encodeURIComponent(variable) : variable;
+                });
+                const [pathname, pathQuery] = pathnameBase.split('?');
+                const query = pathQuery ? {...queryBase, ...queryString.parse(pathQuery)} : queryBase;
+                const search = queryString.stringify(query);
+                return History.createPath({
+                    pathname,
+                    search,
+                    hash,
+                });
+            }
+            else {
+                const [pathname, search] = urlTemplate.split('?');
+                return History.createPath({
+                    pathname,
+                    search,
+                    hash,
+                });
+            }
+        };
 
         function TemplateLink(props: T & LinkProps) {
             const {
@@ -161,13 +198,7 @@ const createFactory = (options: FactoryParams = {}) => {
                 ...rest
             } = {...initialProps, ...props};
 
-            const t = rest as T;
-            const query = toQuery(t);
-            const urlPrefix = toUrl(t);
-            const search = queryString.stringify(query);
-            const url = urlPrefix
-                + (search ? (urlPrefix.includes('?') ? '&' : '?') + search : '')
-                + (hash ? '#' + hash : '');
+            const url = toUrl(rest as T, {hash});
 
             return (
                 <Link
@@ -181,6 +212,7 @@ const createFactory = (options: FactoryParams = {}) => {
                 </Link>
             );
         }
+        TemplateLink.toUrl = toUrl;
         return TemplateLink;
     }
     return {Link, createLink};
