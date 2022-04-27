@@ -13,15 +13,22 @@ import {
 type Any = any;
 
 // as id is widely used, we omit it
-interface LinkProps extends Pick<ReactRouter.NavLinkProps, 'to' | 'className' | 'style' | 'onClick' | 'children'> {
-    /* 开启新窗口 */
+interface LinkPropsBase extends Pick<ReactRouter.NavLinkProps, 'className' | 'style' | 'onClick' | 'children'> {
+    // 开启新窗口
     blank?: boolean;
-    hash?: string;
-    disableExternalIcon?: boolean;
     linkType?: 'text' | 'default' | 'none';
+    disabled?: boolean;
+    disableExternalIcon?: boolean;
 }
 
-type TemplateLinkProps = Omit<LinkProps, 'to'>;
+export interface LinkProps extends LinkPropsBase {
+    // 可以接受 undefined
+    to?: ReactRouter.To;
+}
+
+export interface TemplateLinkProps extends LinkPropsBase {
+    hash?: string;
+}
 
 type MixTemplateLinkProps<T> = T extends object ? (T & TemplateLinkProps) : TemplateLinkProps;
 
@@ -94,6 +101,9 @@ const getDomChildren = (children: React.ReactNode, options: DomChildrenOptions) 
     if (externalIcon === null) {
         return children;
     }
+    if (typeof children !== 'string') {
+        return children;
+    }
     return <>{children}{externalIcon}</>;
 };
 
@@ -125,6 +135,7 @@ const createFactory = (options: FactoryParams = {}) => {
             linkType = 'default',
             disableExternalIcon = false,
             className: propClassName,
+            onClick: propsOnClick,
             ...restProps
         } = props;
 
@@ -139,9 +150,29 @@ const createFactory = (options: FactoryParams = {}) => {
         }
 
         const className = getClassName(propClassName, {prefixCls, linkType});
+        const handleClick = React.useCallback(
+            e => {
+                if (props.disabled) {
+                    e.preventDefault();
+                    return;
+                }
+                if (propsOnClick) {
+                    propsOnClick(e);
+                }
+            },
+            [props.disabled, propsOnClick]
+        );
 
         if (to && !external && inRouterContext) {
-            return <ReactRouter.NavLink to={to} className={className} {...blankProps} {...restProps} />;
+            return (
+                <ReactRouter.NavLink
+                    to={to}
+                    className={className}
+                    onClick={handleClick}
+                    {...blankProps}
+                    {...restProps}
+                />
+            );
         }
 
         const {style, children, ...restDomProps} = restProps;
@@ -155,6 +186,7 @@ const createFactory = (options: FactoryParams = {}) => {
             className: compatibleClassName,
             style: compatibleStyle,
             children: domChildren,
+            onClick: handleClick,
             ...blankProps,
             ...restDomProps,
         };
@@ -204,6 +236,7 @@ const createFactory = (options: FactoryParams = {}) => {
                 onClick,
                 children,
                 linkType,
+                disabled,
                 disableExternalIcon,
                 ...rest
             } = {...initialProps, ...props};
@@ -218,6 +251,7 @@ const createFactory = (options: FactoryParams = {}) => {
                     style={style}
                     onClick={onClick}
                     linkType={linkType}
+                    disabled={disabled}
                     disableExternalIcon={disableExternalIcon}
                 >
                     {children}

@@ -125,7 +125,6 @@ describe('createFactory', () => {
     });
 
     test('react-router-dom to props', () => {
-        // @ts-expect-error
         const link1 = <Link to={undefined}>text</Link>;
         const link2 = <Link to={{pathname: '/'}}>text</Link>;
         expect(create(link1)).toMatchSnapshot();
