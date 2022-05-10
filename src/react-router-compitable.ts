@@ -6,7 +6,7 @@ export const getCompatibleHref = (to?: ReactRouter.To): string => {
     if (typeof to === 'string') {
         return to;
     }
-    if (typeof to === 'object') {
+    if (typeof to === 'object' && to !== null) {
         return History.createPath(to);
     }
     return '';
