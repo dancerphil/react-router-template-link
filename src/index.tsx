@@ -12,11 +12,13 @@ import {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Any = any;
 
+type LinkType = 'text' | 'default' | 'none';
+
 // as id is widely used, we omit it
 interface LinkPropsBase extends Pick<ReactRouter.NavLinkProps, 'className' | 'style' | 'onClick' | 'children'> {
     // 开启新窗口
     blank?: boolean;
-    linkType?: 'text' | 'default' | 'none';
+    linkType?: LinkType;
     disabled?: boolean;
     disableExternalIcon?: boolean;
 }
@@ -39,6 +41,7 @@ interface FactoryParams {
     encodePathVariable?: boolean;
     externalIcon?: React.ReactNode;
     prefixCls?: string;
+    defaultLinkType?: LinkType;
 }
 
 interface ToUrlOptions {
@@ -66,7 +69,7 @@ const isExternalDefault = (to?: ReactRouter.To) => {
 
 interface ClassNameOptions {
     prefixCls: string;
-    linkType: 'text' | 'default' | 'none';
+    linkType: LinkType;
 }
 
 const getClassName = (className: ReactRouter.NavLinkProps['className'], options: ClassNameOptions) => {
@@ -123,6 +126,7 @@ const createFactory = (options: FactoryParams = {}) => {
         encodePathVariable = false,
         externalIcon = null,
         prefixCls = 'panda-link',
+        defaultLinkType = 'default',
     } = options;
 
     function Link(props: LinkProps) {
@@ -132,7 +136,7 @@ const createFactory = (options: FactoryParams = {}) => {
         const {
             blank,
             to,
-            linkType = 'default',
+            linkType = defaultLinkType,
             disableExternalIcon = false,
             className: propClassName,
             onClick: propsOnClick,
