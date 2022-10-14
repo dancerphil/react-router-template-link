@@ -116,7 +116,6 @@ describe('createFactory', () => {
     test('react-router-dom children props', () => {
         const HomeLink = createLink('/');
         const link1 = <HomeLink>{() => 'text'}</HomeLink>;
-        // @ts-expect-error
         const link2 = <HomeLink />;
         expect(create(link1)).toMatchSnapshot();
         expect(create(<BrowserRouter>{link1}</BrowserRouter>)).toMatchSnapshot();

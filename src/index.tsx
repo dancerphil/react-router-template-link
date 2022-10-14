@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
-import * as History from 'history';
+import * as History from '@remix-run/router';
 import * as queryString from 'query-string';
 import {
     getCompatibleClassName,
@@ -73,7 +73,7 @@ const getClassName = (className: ReactRouter.NavLinkProps['className'], options:
     const {prefixCls, linkType} = options;
     const baseClassName = `${prefixCls} ${prefixCls}-${linkType}`;
     if (typeof className === 'function') {
-        return (params: {isActive: boolean}) => {
+        return (params: {isActive: boolean, isPending: boolean}) => {
             const result = className(params);
             return `${baseClassName} ${result}`;
         };
@@ -151,7 +151,7 @@ const createFactory = (options: FactoryParams = {}) => {
 
         const className = getClassName(propClassName, {prefixCls, linkType});
         const handleClick = React.useCallback(
-            e => {
+            (e: React.MouseEvent<HTMLAnchorElement>) => {
                 if (props.disabled) {
                     e.preventDefault();
                     return;

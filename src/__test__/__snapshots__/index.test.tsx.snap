@@ -4,6 +4,7 @@ exports[`createFactory Link 1`] = `
 <a
   className="panda-link panda-link-default"
   href="/"
+  onClick={[Function]}
 >
   text
 </a>
@@ -13,6 +14,7 @@ exports[`createFactory combined query 1`] = `
 <a
   className="panda-link panda-link-default"
   href="/users/danceprhil?from=file&type=a"
+  onClick={[Function]}
 >
   text
 </a>
@@ -32,6 +34,7 @@ exports[`createFactory createLink 1`] = `
 <a
   className="panda-link panda-link-default"
   href="/"
+  onClick={[Function]}
 >
   text
 </a>
@@ -52,6 +55,7 @@ exports[`createFactory encodePathVariable 1`] = `
 <a
   className="panda-link panda-link-default"
   href="/users/a%2Fb"
+  onClick={[Function]}
 >
   text
 </a>
@@ -71,6 +75,7 @@ exports[`createFactory explicit query 1`] = `
 <a
   className="panda-link panda-link-default"
   href="/users/danceprhil?from=file"
+  onClick={[Function]}
 >
   text
 </a>
@@ -90,6 +95,7 @@ exports[`createFactory external 1`] = `
 <a
   className="panda-link panda-link-default"
   href="https://example.com"
+  onClick={[Function]}
   rel="noopener noreferrer"
   target="_blank"
 >
@@ -101,6 +107,7 @@ exports[`createFactory external 2`] = `
 <a
   className="panda-link panda-link-default"
   href="https://example.com"
+  onClick={[Function]}
   rel="noopener noreferrer"
   target="_blank"
 >
@@ -112,6 +119,7 @@ exports[`createFactory hash 1`] = `
 <a
   className="panda-link panda-link-default"
   href="/#1"
+  onClick={[Function]}
 >
   text
 </a>
@@ -132,6 +140,7 @@ exports[`createFactory query 1`] = `
 <a
   className="panda-link panda-link-default"
   href="/users/danceprhil?from=file"
+  onClick={[Function]}
 >
   text
 </a>
@@ -151,6 +160,7 @@ exports[`createFactory react-router-dom children props 1`] = `
 <a
   className="panda-link panda-link-default"
   href="/"
+  onClick={[Function]}
 >
   text
 </a>
@@ -171,6 +181,7 @@ exports[`createFactory react-router-dom children props 3`] = `
 <a
   className="panda-link panda-link-default"
   href="/"
+  onClick={[Function]}
 />
 `;
 
@@ -187,6 +198,7 @@ exports[`createFactory react-router-dom className props 1`] = `
 <a
   className="panda-link panda-link-default class1"
   href="/"
+  onClick={[Function]}
 >
   text
 </a>
@@ -207,6 +219,7 @@ exports[`createFactory react-router-dom className props 3`] = `
 <a
   className="panda-link panda-link-default class2"
   href="/"
+  onClick={[Function]}
 >
   text
 </a>
@@ -227,6 +240,7 @@ exports[`createFactory react-router-dom className props 5`] = `
 <a
   className="panda-link panda-link-default"
   href="/"
+  onClick={[Function]}
 >
   text
 </a>
@@ -247,6 +261,7 @@ exports[`createFactory react-router-dom style props 1`] = `
 <a
   className="panda-link panda-link-default"
   href="/"
+  onClick={[Function]}
   style={
     Object {
       "color": "pink",
@@ -277,6 +292,7 @@ exports[`createFactory react-router-dom style props 3`] = `
 <a
   className="panda-link panda-link-default"
   href="/"
+  onClick={[Function]}
   style={
     Object {
       "color": "hotpink",
@@ -307,6 +323,7 @@ exports[`createFactory react-router-dom to props 1`] = `
 <a
   className="panda-link panda-link-default"
   href=""
+  onClick={[Function]}
 >
   text
 </a>
@@ -316,6 +333,7 @@ exports[`createFactory react-router-dom to props 2`] = `
 <a
   className="panda-link panda-link-default"
   href=""
+  onClick={[Function]}
 >
   text
 </a>
@@ -325,6 +343,7 @@ exports[`createFactory react-router-dom to props 3`] = `
 <a
   className="panda-link panda-link-default"
   href="/"
+  onClick={[Function]}
 >
   text
 </a>
@@ -345,6 +364,7 @@ exports[`createFactory template 1`] = `
 <a
   className="panda-link panda-link-default"
   href="/users/danceprhil"
+  onClick={[Function]}
 >
   text
 </a>

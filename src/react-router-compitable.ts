@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
-import * as History from 'history';
+import * as History from '@remix-run/router';
 
 export const getCompatibleHref = (to?: ReactRouter.To): string => {
     if (typeof to === 'string') {
@@ -14,7 +14,7 @@ export const getCompatibleHref = (to?: ReactRouter.To): string => {
 
 export const getCompatibleClassName = (className?: ReactRouter.NavLinkProps['className']): string | undefined => {
     if (typeof className === 'function') {
-        return className({isActive: false});
+        return className({isActive: false, isPending: false});
     }
     if (typeof className === 'string') {
         return className;
@@ -24,14 +24,14 @@ export const getCompatibleClassName = (className?: ReactRouter.NavLinkProps['cla
 
 export const getCompatibleStyle = (style?: ReactRouter.NavLinkProps['style']): React.CSSProperties | undefined => {
     if (typeof style === 'function') {
-        return style({isActive: false});
+        return style({isActive: false, isPending: false});
     }
     return style;
 };
 
 export const getCompatibleChildren = (children?: ReactRouter.NavLinkProps['children']): React.ReactNode => {
     if (typeof children === 'function') {
-        return children({isActive: false});
+        return children({isActive: false, isPending: false});
     }
     return children;
 };

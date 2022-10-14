@@ -24,30 +24,32 @@
   "author": "Cong Zhang <dancerphil1994@gmail.com>",
   "license": "MIT",
   "peerDependencies": {
-    "react": ">=18",
-    "react-router-dom": ">=6"
+    "react": "^18.2.0",
+    "react-router-dom": "^6.4.2"
   },
   "dependencies": {
     "query-string": "^7.1.1"
   },
   "devDependencies": {
-    "@reskript/cli": "^4.2.1",
-    "@reskript/cli-lint": "^4.2.1",
-    "@reskript/cli-test": "^4.2.1",
-    "@reskript/config-jest": "^4.2.1",
-    "@reskript/config-lint": "^4.2.1",
-    "@testing-library/jest-dom": "^5.16.2",
-    "@testing-library/react": "^13.0.0-alpha.5",
-    "@testing-library/react-hooks": "^7.0.2",
-    "@types/jest": "^27.4.1",
-    "@types/react": "^17.0.38",
-    "core-js": "^3.21.1",
-    "eslint": "^8.10.0",
-    "react": "^18.0.0-rc.0",
-    "react-dom": "^18.0.0-rc.1",
-    "react-router-dom": "^6.2.1",
-    "react-test-renderer": "^18.0.0-rc.1",
-    "stylelint": "^14.5.3",
-    "typescript": "^4.6.2"
+    "@reskript/cli": "^5.7.2",
+    "@reskript/cli-lint": "^5.7.2",
+    "@reskript/cli-test": "^5.7.2",
+    "@reskript/config-jest": "^5.7.2",
+    "@reskript/config-lint": "^5.7.2",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/react-hooks": "^8.0.1",
+    "@types/jest": "^29.1.2",
+    "@types/react": "^18.0.21",
+    "@types/react-test-renderer": "^18.0.0",
+    "core-js": "^3.25.5",
+    "eslint": "^8.25.0",
+    "husky": "^8.0.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.4.2",
+    "react-test-renderer": "^18.2.0",
+    "stylelint": "^14.13.0",
+    "typescript": "^4.8.4"
   }
 }
