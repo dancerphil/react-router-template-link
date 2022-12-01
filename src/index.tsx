@@ -14,8 +14,25 @@ type Any = any;
 
 type LinkType = 'text' | 'default' | 'none';
 
+type PickedLinkProps = Pick<
+    ReactRouter.NavLinkProps,
+    // NavLink 忽略 to，允许不传
+    | 'reloadDocument'
+    | 'replace'
+    | 'state'
+    | 'preventScrollReset'
+    | 'relative'
+    | 'children'
+    | 'caseSensitive'
+    | 'className'
+    | 'end'
+    | 'style'
+    // 从 a 标签取一个 onClick
+    | 'onClick'
+>;
+
 // as id is widely used, we omit it
-interface LinkPropsBase extends Pick<ReactRouter.NavLinkProps, 'className' | 'style' | 'onClick' | 'children'> {
+interface LinkPropsBase extends PickedLinkProps {
     // 开启新窗口
     blank?: boolean;
     linkType?: LinkType;
@@ -30,6 +47,28 @@ export interface LinkProps extends LinkPropsBase {
 
 export interface TemplateLinkProps extends LinkPropsBase {
     hash?: string;
+}
+
+type Keywords = | 'reloadDocument'
+    | 'replace'
+    | 'state'
+    | 'preventScrollReset'
+    | 'relative'
+    | 'children'
+    | 'caseSensitive'
+    | 'className'
+    | 'end'
+    | 'style'
+    | 'onClick'
+    | 'blank'
+    | 'linkType'
+    | 'disabled'
+    | 'disableExternalIcon'
+    | 'to'
+    | 'hash';
+
+interface TBase extends Partial<Record<Keywords, never>> {
+    [key: string]: Any;
 }
 
 type MixTemplateLinkProps<T> = T extends object ? (T & TemplateLinkProps) : TemplateLinkProps;
@@ -110,11 +149,8 @@ const getDomChildren = (children: React.ReactNode, options: DomChildrenOptions) 
     return <>{children}{externalIcon}</>;
 };
 
-// 兼容 react-router@5，对新版本不做处理
-const legacyHookKey = 'useHistory0'.slice(0, -1) as 'useInRouterContext';
-
 // istanbul ignore next
-const useInRouterContext = ReactRouter.useInRouterContext ?? ReactRouter[legacyHookKey];
+const useInRouterContext = ReactRouter.useInRouterContext;
 
 // NOTE add an option to config picked dom props
 // it is a bit difficult to deal with type
@@ -199,7 +235,7 @@ const createFactory = (options: FactoryParams = {}) => {
     }
 
     // eslint-disable-next-line max-len
-    function createLink<T = void>(urlTemplate: string, initialProps?: Partial<MixTemplateLinkProps<T>>): React.FC<MixTemplateLinkProps<T>> & {toUrl: (params: T, options?: ToUrlOptions) => string} {
+    function createLink<T extends TBase | void = void>(urlTemplate: string, initialProps?: Partial<MixTemplateLinkProps<T>>): React.FC<MixTemplateLinkProps<T>> & {toUrl: (params: T, options?: ToUrlOptions) => string} {
 
         const toUrl = (params: T, options?: ToUrlOptions): string => {
             const {hash = ''} = options ?? {};

@@ -1,6 +1,6 @@
 {
   "name": "react-router-template-link",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "react-router-template-link",
   "main": "lib/index.js",
   "module": "es/index.js",
