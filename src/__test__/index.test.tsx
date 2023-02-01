@@ -1,4 +1,3 @@
-import * as React from 'react';
 import '@testing-library/jest-dom';
 import {create} from 'react-test-renderer';
 import {BrowserRouter} from 'react-router-dom';
@@ -64,8 +63,18 @@ describe('createFactory', () => {
         expect(create(<BrowserRouter>{link}</BrowserRouter>)).toMatchSnapshot();
     });
 
-    test('encodePathVariable', () => {
+    test('encodePathVariable: true', () => {
         const {createLink} = createFactory({encodePathVariable: true});
+        interface Params {
+            userId: string;
+        }
+        const UserLink = createLink<Params>('/users/{userId}');
+        const link = <UserLink userId="a/b">text</UserLink>;
+        expect(create(link)).toMatchSnapshot();
+        expect(create(<BrowserRouter>{link}</BrowserRouter>)).toMatchSnapshot();
+    });
+
+    test('encodePathVariable: false', () => {
         interface Params {
             userId: string;
         }
@@ -87,6 +96,23 @@ describe('createFactory', () => {
         const link = <ExampleLink>text</ExampleLink>;
         expect(create(link)).toMatchSnapshot();
         expect(create(<BrowserRouter>{link}</BrowserRouter>)).toMatchSnapshot();
+    });
+
+    test('forceHtmlAnchor', () => {
+        const AboutLink = createLink('/about');
+        const link = <AboutLink forceHtmlAnchor>text</AboutLink>;
+        expect(create(link)).toMatchSnapshot();
+        expect(create(<BrowserRouter>{link}</BrowserRouter>)).toMatchSnapshot();
+    });
+
+    test('forceHtmlAnchor with basename', () => {
+        const basename = '/base';
+        const {createLink} = createFactory({basename});
+        const AboutLink = createLink('/about');
+        const link = <AboutLink forceHtmlAnchor>text</AboutLink>;
+        expect(create(link)).toMatchSnapshot();
+        // TODO FIXME
+        expect(create(<BrowserRouter basename={basename}>{link}</BrowserRouter>)).toMatchSnapshot();
     });
 
     test('react-router-dom className props', () => {

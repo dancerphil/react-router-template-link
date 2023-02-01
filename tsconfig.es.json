@@ -6,7 +6,7 @@
         "target": "es6",
         "moduleResolution": "node",
         "lib": ["esnext", "dom"],
-        "jsx": "react",
+        "jsx": "react-jsx",
         "skipLibCheck": true
     },
     "include": [

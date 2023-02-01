@@ -51,7 +51,27 @@ exports[`createFactory createLink 2`] = `
 </a>
 `;
 
-exports[`createFactory encodePathVariable 1`] = `
+exports[`createFactory encodePathVariable: false 1`] = `
+<a
+  className="panda-link panda-link-default"
+  href="/users/a/b"
+  onClick={[Function]}
+>
+  text
+</a>
+`;
+
+exports[`createFactory encodePathVariable: false 2`] = `
+<a
+  className="panda-link panda-link-default"
+  href="/users/a/b"
+  onClick={[Function]}
+>
+  text
+</a>
+`;
+
+exports[`createFactory encodePathVariable: true 1`] = `
 <a
   className="panda-link panda-link-default"
   href="/users/a%2Fb"
@@ -61,7 +81,7 @@ exports[`createFactory encodePathVariable 1`] = `
 </a>
 `;
 
-exports[`createFactory encodePathVariable 2`] = `
+exports[`createFactory encodePathVariable: true 2`] = `
 <a
   className="panda-link panda-link-default"
   href="/users/a%2Fb"
@@ -114,6 +134,44 @@ exports[`createFactory external 2`] = `
   text
 </a>
 `;
+
+exports[`createFactory forceHtmlAnchor 1`] = `
+<a
+  className="panda-link panda-link-default"
+  href="/about"
+  onClick={[Function]}
+  rel="noopener noreferrer"
+  target="_blank"
+>
+  text
+</a>
+`;
+
+exports[`createFactory forceHtmlAnchor 2`] = `
+<a
+  className="panda-link panda-link-default"
+  href="/about"
+  onClick={[Function]}
+  rel="noopener noreferrer"
+  target="_blank"
+>
+  text
+</a>
+`;
+
+exports[`createFactory forceHtmlAnchor with basename 1`] = `
+<a
+  className="panda-link panda-link-default"
+  href="/base/about"
+  onClick={[Function]}
+  rel="noopener noreferrer"
+  target="_blank"
+>
+  text
+</a>
+`;
+
+exports[`createFactory forceHtmlAnchor with basename 2`] = `null`;
 
 exports[`createFactory hash 1`] = `
 <a

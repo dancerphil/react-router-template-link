@@ -1,6 +1,6 @@
-import * as React from 'react';
-import * as ReactRouter from 'react-router-dom';
-import * as History from '@remix-run/router';
+import {useCallback, FC, ReactNode, MouseEvent} from 'react';
+import {useInRouterContext, NavLink, To, NavLinkProps} from 'react-router-dom';
+import {createPath} from '@remix-run/router';
 import * as queryString from 'query-string';
 import {
     getCompatibleClassName,
@@ -15,7 +15,7 @@ type Any = any;
 type LinkType = 'text' | 'default' | 'none';
 
 type PickedLinkProps = Pick<
-    ReactRouter.NavLinkProps,
+    NavLinkProps,
     // NavLink 忽略 to，允许不传
     | 'reloadDocument'
     | 'replace'
@@ -33,8 +33,10 @@ type PickedLinkProps = Pick<
 
 // as id is widely used, we omit it
 interface LinkPropsBase extends PickedLinkProps {
-    // 开启新窗口
+    /** 在新标签页打开 */
     blank?: boolean;
+    /** 强行使用原生 `<a>` 标签 */
+    forceHtmlAnchor?: boolean;
     linkType?: LinkType;
     disabled?: boolean;
     disableExternalIcon?: boolean;
@@ -42,7 +44,7 @@ interface LinkPropsBase extends PickedLinkProps {
 
 export interface LinkProps extends LinkPropsBase {
     // 可以接受 undefined
-    to?: ReactRouter.To;
+    to?: To;
 }
 
 export interface TemplateLinkProps extends LinkPropsBase {
@@ -76,14 +78,14 @@ type MixTemplateLinkProps<T> = T extends object ? (T & TemplateLinkProps) : Temp
 interface FactoryParams {
     basename?: string;
     interpolate?: RegExp;
-    isExternal?: (to?: ReactRouter.To) => boolean;
+    isExternal?: (to?: To) => boolean;
     encodePathVariable?: boolean;
-    externalIcon?: React.ReactNode;
+    externalIcon?: ReactNode;
     prefixCls?: string;
     defaultLinkType?: LinkType;
 }
 
-interface ToUrlOptions {
+export interface ToUrlOptions {
     hash?: string;
 }
 
@@ -96,7 +98,7 @@ const omit = (object: Any, paths: string[]) => {
     return result;
 };
 
-const isExternalDefault = (to?: ReactRouter.To) => {
+const isExternalDefault = (to?: To) => {
     if (!to) {
         return false;
     }
@@ -111,7 +113,7 @@ interface ClassNameOptions {
     linkType: LinkType;
 }
 
-const getClassName = (className: ReactRouter.NavLinkProps['className'], options: ClassNameOptions) => {
+const getClassName = (className: NavLinkProps['className'], options: ClassNameOptions) => {
     const {prefixCls, linkType} = options;
     const baseClassName = `${prefixCls} ${prefixCls}-${linkType}`;
     if (typeof className === 'function') {
@@ -129,10 +131,10 @@ const getClassName = (className: ReactRouter.NavLinkProps['className'], options:
 interface DomChildrenOptions {
     external: boolean;
     disableExternalIcon: boolean;
-    externalIcon: React.ReactNode;
+    externalIcon: ReactNode;
 }
 
-const getDomChildren = (children: React.ReactNode, options: DomChildrenOptions) => {
+const getDomChildren = (children: ReactNode, options: DomChildrenOptions) => {
     const {external, disableExternalIcon, externalIcon} = options;
     if (!external) {
         return children;
@@ -148,9 +150,6 @@ const getDomChildren = (children: React.ReactNode, options: DomChildrenOptions) 
     }
     return <>{children}{externalIcon}</>;
 };
-
-// istanbul ignore next
-const useInRouterContext = ReactRouter.useInRouterContext;
 
 // NOTE add an option to config picked dom props
 // it is a bit difficult to deal with type
@@ -171,6 +170,7 @@ const createFactory = (options: FactoryParams = {}) => {
 
         const {
             blank,
+            forceHtmlAnchor,
             to,
             linkType = defaultLinkType,
             disableExternalIcon = false,
@@ -182,7 +182,7 @@ const createFactory = (options: FactoryParams = {}) => {
         const external = isExternal(to);
 
         let blankProps = {};
-        if (blank || external) {
+        if (blank || external || forceHtmlAnchor) {
             blankProps = {
                 target: '_blank',
                 rel: 'noopener noreferrer',
@@ -190,8 +190,8 @@ const createFactory = (options: FactoryParams = {}) => {
         }
 
         const className = getClassName(propClassName, {prefixCls, linkType});
-        const handleClick = React.useCallback(
-            (e: React.MouseEvent<HTMLAnchorElement>) => {
+        const handleClick = useCallback(
+            (e: MouseEvent<HTMLAnchorElement>) => {
                 if (props.disabled) {
                     e.preventDefault();
                     return;
@@ -203,9 +203,9 @@ const createFactory = (options: FactoryParams = {}) => {
             [props.disabled, propsOnClick]
         );
 
-        if (to && !external && inRouterContext) {
+        if (to && !external && !forceHtmlAnchor && inRouterContext) {
             return (
-                <ReactRouter.NavLink
+                <NavLink
                     to={to}
                     className={className}
                     onClick={handleClick}
@@ -235,7 +235,7 @@ const createFactory = (options: FactoryParams = {}) => {
     }
 
     // eslint-disable-next-line max-len
-    function createLink<T extends TBase | void = void>(urlTemplate: string, initialProps?: Partial<MixTemplateLinkProps<T>>): React.FC<MixTemplateLinkProps<T>> & {toUrl: (params: T, options?: ToUrlOptions) => string} {
+    function createLink<T extends TBase | void = void>(urlTemplate: string, initialProps?: Partial<MixTemplateLinkProps<T>>): FC<MixTemplateLinkProps<T>> & {toUrl: (params: T, options?: ToUrlOptions) => string} {
 
         const toUrl = (params: T, options?: ToUrlOptions): string => {
             const {hash = ''} = options ?? {};
@@ -251,7 +251,7 @@ const createFactory = (options: FactoryParams = {}) => {
                 const [pathname, pathQuery] = pathnameBase.split('?');
                 const query = pathQuery ? {...queryBase, ...queryString.parse(pathQuery)} : queryBase;
                 const search = queryString.stringify(query);
-                return History.createPath({
+                return createPath({
                     pathname,
                     search,
                     hash,
@@ -259,7 +259,7 @@ const createFactory = (options: FactoryParams = {}) => {
             }
             else {
                 const [pathname, search] = urlTemplate.split('?');
-                return History.createPath({
+                return createPath({
                     pathname,
                     search,
                     hash,
@@ -270,6 +270,7 @@ const createFactory = (options: FactoryParams = {}) => {
         function TemplateLink(props: MixTemplateLinkProps<T>) {
             const {
                 blank,
+                forceHtmlAnchor,
                 hash,
                 className,
                 style,
@@ -287,6 +288,7 @@ const createFactory = (options: FactoryParams = {}) => {
                 <Link
                     to={url}
                     blank={blank}
+                    forceHtmlAnchor={forceHtmlAnchor}
                     className={className}
                     style={style}
                     onClick={onClick}
