@@ -51,6 +51,15 @@ exports[`createFactory createLink 2`] = `
 </a>
 `;
 
+exports[`createFactory empty to with basename 1`] = `
+<a
+  className="panda-link panda-link-default"
+  onClick={[Function]}
+>
+  text
+</a>
+`;
+
 exports[`createFactory encodePathVariable: false 1`] = `
 <a
   className="panda-link panda-link-default"
@@ -380,7 +389,6 @@ exports[`createFactory react-router-dom style props 4`] = `
 exports[`createFactory react-router-dom to props 1`] = `
 <a
   className="panda-link panda-link-default"
-  href=""
   onClick={[Function]}
 >
   text
@@ -390,7 +398,6 @@ exports[`createFactory react-router-dom to props 1`] = `
 exports[`createFactory react-router-dom to props 2`] = `
 <a
   className="panda-link panda-link-default"
-  href=""
   onClick={[Function]}
 >
   text

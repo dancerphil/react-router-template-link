@@ -147,6 +147,19 @@ const getDomChildren = (children: ReactNode, options: DomChildrenOptions) => {
     return <>{children}{externalIcon}</>;
 };
 
+interface DomHrefOptions {
+    external: boolean;
+    basename: string;
+}
+
+const getDomHref = (href: string | undefined, options: DomHrefOptions) => {
+    const {external, basename} = options;
+    if (!href) {
+        return undefined;
+    }
+    return external ? href : `${basename}${href}`;
+};
+
 // NOTE add an option to config picked dom props
 // it is a bit difficult to deal with type
 const createFactory = (options: FactoryParams = {}) => {
@@ -217,8 +230,9 @@ const createFactory = (options: FactoryParams = {}) => {
         const compatibleStyle = getCompatibleStyle(style);
         const compatibleChildren = getCompatibleChildren(children);
         const domChildren = getDomChildren(compatibleChildren, {external, disableExternalIcon, externalIcon});
+        const domHref = getDomHref(href, {external, basename});
         const domProps = {
-            href: external ? href : `${basename}${href}`,
+            href: domHref,
             className: compatibleClassName,
             style: compatibleStyle,
             children: domChildren,

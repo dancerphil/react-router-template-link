@@ -115,6 +115,13 @@ describe('createFactory', () => {
         expect(create(<BrowserRouter basename={basename}>{link}</BrowserRouter>)).toMatchSnapshot();
     });
 
+    test('empty to with basename', () => {
+        const basename = '/base';
+        const {Link} = createFactory({basename});
+        const link = <Link to="">text</Link>;
+        expect(create(link)).toMatchSnapshot();
+    });
+
     test('react-router-dom className props', () => {
         const HomeLink = createLink('/');
         const link1 = <HomeLink className="class1">text</HomeLink>;
