@@ -268,7 +268,9 @@ const createFactory = (options: FactoryParams = {}) => {
                 });
             }
             else {
-                const [pathname, search] = urlTemplate.split('?');
+                const [pathname, pathQuery] = urlTemplate.split('?');
+                const query = pathQuery ? {...params, ...queryString.parse(pathQuery)} : params as Any;
+                const search = queryString.stringify(query);
                 return createPath({
                     pathname,
                     search,
