@@ -40,6 +40,8 @@ const {Link, createLink} = createFactory(options);
 
 `{boolean} options.encodePathVariable`: 是否转译 path 上的变量。如把 `a/b` 转译为 `a%2fb`。默认为 `false`
 
+`{boolean} options.encodeQueryVariable`: 是否转译 query 上的变量。如把 `a/b` 转译为 `a%2fb`。默认为 `true`
+
 `{ReactNode} options.externalIcon`: 在外部链接时展示的图标。默认为 `null`
 
 ## props

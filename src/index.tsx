@@ -76,6 +76,7 @@ interface FactoryParams {
     interpolate?: RegExp;
     isExternal?: (to?: To) => boolean;
     encodePathVariable?: boolean;
+    encodeQueryVariable?: boolean;
     externalIcon?: ReactNode;
     prefixCls?: string;
     defaultLinkType?: LinkType;
@@ -168,6 +169,7 @@ const createFactory = (options: FactoryParams = {}) => {
         interpolate = /{(\w+)}/g,
         isExternal = isExternalDefault,
         encodePathVariable = false,
+        encodeQueryVariable = true,
         externalIcon = null,
         prefixCls = 'panda-link',
         defaultLinkType = 'default',
@@ -260,7 +262,7 @@ const createFactory = (options: FactoryParams = {}) => {
                 });
                 const [pathname, pathQuery] = pathnameBase.split('?');
                 const query = pathQuery ? {...queryBase, ...queryString.parse(pathQuery)} : queryBase;
-                const search = queryString.stringify(query);
+                const search = queryString.stringify(query, {encode: encodeQueryVariable});
                 return createPath({
                     pathname,
                     search,
@@ -270,7 +272,7 @@ const createFactory = (options: FactoryParams = {}) => {
             else {
                 const [pathname, pathQuery] = urlTemplate.split('?');
                 const query = pathQuery ? {...params, ...queryString.parse(pathQuery)} : params as Any;
-                const search = queryString.stringify(query);
+                const search = queryString.stringify(query, {encode: encodeQueryVariable});
                 return createPath({
                     pathname,
                     search,
