@@ -20,7 +20,9 @@ const UserLink = createLink<{userId: string}>('/user/{userId}');
 
 <UserLink userId="xxx" />
 
-// or
+const url = UserLink.toUrl({userId: 'xxx'});
+    
+// 也可直接使用
 <Link to="/user/xxx" />
 ```
 
