@@ -16,6 +16,11 @@ describe('toUrl', () => {
         expect(UserLink.toUrl({userId: 'dancerphil'})).toBe('/users/dancerphil');
     });
 
+    test('path params undefined', () => {
+        const UserLink = createLink<unknown>('/users/{userId}/detail');
+        expect(UserLink.toUrl({})).toBe('/users//detail');
+    });
+
     test('query params defined', () => {
         interface Params {
             userId: string;

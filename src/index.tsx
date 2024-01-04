@@ -257,7 +257,7 @@ const createFactory = (options: FactoryParams = {}) => {
                 const queryBase = omit(params, templateKeys);
                 const pathnameBase = urlTemplate.replace(interpolate, (match, name) => {
                     // @ts-expect-error
-                    const variable = params[name];
+                    const variable: string = params[name] ?? '';
                     return encodePathVariable ? encodeURIComponent(variable) : variable;
                 });
                 const [pathname, pathQuery] = pathnameBase.split('?');
