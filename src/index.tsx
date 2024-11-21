@@ -51,24 +51,6 @@ export interface TemplateLinkProps extends LinkPropsBase {
     hash?: string;
 }
 
-// type Keywords = | 'reloadDocument'
-//     | 'replace'
-//     | 'state'
-//     | 'preventScrollReset'
-//     | 'relative'
-//     | 'children'
-//     | 'caseSensitive'
-//     | 'className'
-//     | 'end'
-//     | 'style'
-//     | 'onClick'
-//     | 'blank'
-//     | 'linkType'
-//     | 'disabled'
-//     | 'disableExternalIcon'
-//     | 'to'
-//     | 'hash';
-
 export type MixTemplateLinkProps<T> = T extends object ? (T & TemplateLinkProps) : TemplateLinkProps;
 
 interface FactoryParams {
@@ -161,6 +143,10 @@ const getDomHref = (href: string | undefined, options: DomHrefOptions) => {
     return external ? href : `${basename}${href}`;
 };
 
+export type TemplateLinkInstance<T> = FC<MixTemplateLinkProps<T>> & {
+    toUrl: (params: T, options?: ToUrlOptions) => string;
+};
+
 // NOTE add an option to config picked dom props
 // it is a bit difficult to deal with type
 const createFactory = (options: FactoryParams = {}) => {
@@ -247,7 +233,7 @@ const createFactory = (options: FactoryParams = {}) => {
     }
 
     // eslint-disable-next-line max-len
-    function createLink<T = void>(urlTemplate: string, initialProps?: Partial<MixTemplateLinkProps<T>>): FC<MixTemplateLinkProps<T>> & {toUrl: (params: T, options?: ToUrlOptions) => string} {
+    function createLink<T = void>(urlTemplate: string, initialProps?: Partial<MixTemplateLinkProps<T>>): TemplateLinkInstance<T> {
 
         const toUrl = (params: T, options?: ToUrlOptions): string => {
             const {hash = ''} = options ?? {};
