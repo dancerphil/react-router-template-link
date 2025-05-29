@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import {useCallback, FC, ReactNode, MouseEvent} from 'react';
 import {useInRouterContext, NavLink, To, NavLinkProps} from 'react-router-dom';
 import {createPath} from '@remix-run/router';
@@ -71,7 +72,8 @@ export interface ToUrlOptions {
 const omit = (object: Any, paths: string[]) => {
     // 总是返回新对象
     const result = {...object};
-    paths.forEach(path => {
+    paths.forEach((path) => {
+        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
         delete result[path];
     });
     return result;
@@ -96,7 +98,7 @@ const getClassName = (className: NavLinkProps['className'], options: ClassNameOp
     const {prefixCls, linkType} = options;
     const baseClassName = `${prefixCls} ${prefixCls}-${linkType}`;
     if (typeof className === 'function') {
-        return (params: {isActive: boolean, isPending: boolean}) => {
+        return (params: {isActive: boolean; isPending: boolean}) => {
             const result = className(params);
             return `${baseClassName} ${result}`;
         };
@@ -197,7 +199,7 @@ const createFactory = (options: FactoryParams = {}) => {
                     propsOnClick(e);
                 }
             },
-            [props.disabled, propsOnClick]
+            [props.disabled, propsOnClick],
         );
 
         if (to && !external && !forceHtmlAnchor && inRouterContext) {
@@ -234,7 +236,6 @@ const createFactory = (options: FactoryParams = {}) => {
 
     // eslint-disable-next-line max-len
     function createLink<T = void>(urlTemplate: string, initialProps?: Partial<MixTemplateLinkProps<T>>): TemplateLinkInstance<T> {
-
         const toUrl = (params: T, options?: ToUrlOptions): string => {
             const {hash = ''} = options ?? {};
             const variablesInTemplate = urlTemplate.match(interpolate);

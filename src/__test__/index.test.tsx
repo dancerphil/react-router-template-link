@@ -1,4 +1,5 @@
-import '@testing-library/jest-dom';
+/* eslint-disable max-lines */
+import {describe, test, expect} from 'vitest';
 import {create} from 'react-test-renderer';
 import {BrowserRouter} from 'react-router-dom';
 import createFactory from '..';

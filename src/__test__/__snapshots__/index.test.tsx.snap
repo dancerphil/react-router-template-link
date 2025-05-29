@@ -1,4 +1,449 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`createFactory > Link 1`] = `
+<a
+  className="panda-link panda-link-default"
+  href="/"
+  onClick={[Function]}
+>
+  text
+</a>
+`;
+
+exports[`createFactory > combined query 1`] = `
+<a
+  className="panda-link panda-link-default"
+  href="/users/danceprhil?from=file&type=a"
+  onClick={[Function]}
+>
+  text
+</a>
+`;
+
+exports[`createFactory > combined query 2`] = `
+<a
+  className="panda-link panda-link-default"
+  href="/users/danceprhil?from=file&type=a"
+  onClick={[Function]}
+>
+  text
+</a>
+`;
+
+exports[`createFactory > createLink 1`] = `
+<a
+  className="panda-link panda-link-default"
+  href="/"
+  onClick={[Function]}
+>
+  text
+</a>
+`;
+
+exports[`createFactory > createLink 2`] = `
+<a
+  aria-current="page"
+  className="panda-link panda-link-default active"
+  href="/"
+  onClick={[Function]}
+>
+  text
+</a>
+`;
+
+exports[`createFactory > empty to with basename 1`] = `
+<a
+  className="panda-link panda-link-default"
+  onClick={[Function]}
+>
+  text
+</a>
+`;
+
+exports[`createFactory > encodePathVariable: false 1`] = `
+<a
+  className="panda-link panda-link-default"
+  href="/users/a/b"
+  onClick={[Function]}
+>
+  text
+</a>
+`;
+
+exports[`createFactory > encodePathVariable: false 2`] = `
+<a
+  className="panda-link panda-link-default"
+  href="/users/a/b"
+  onClick={[Function]}
+>
+  text
+</a>
+`;
+
+exports[`createFactory > encodePathVariable: true 1`] = `
+<a
+  className="panda-link panda-link-default"
+  href="/users/a%2Fb"
+  onClick={[Function]}
+>
+  text
+</a>
+`;
+
+exports[`createFactory > encodePathVariable: true 2`] = `
+<a
+  className="panda-link panda-link-default"
+  href="/users/a%2Fb"
+  onClick={[Function]}
+>
+  text
+</a>
+`;
+
+exports[`createFactory > explicit query 1`] = `
+<a
+  className="panda-link panda-link-default"
+  href="/users/danceprhil?from=file"
+  onClick={[Function]}
+>
+  text
+</a>
+`;
+
+exports[`createFactory > explicit query 2`] = `
+<a
+  className="panda-link panda-link-default"
+  href="/users/danceprhil?from=file"
+  onClick={[Function]}
+>
+  text
+</a>
+`;
+
+exports[`createFactory > external 1`] = `
+<a
+  className="panda-link panda-link-default"
+  href="https://example.com"
+  onClick={[Function]}
+  rel="noopener noreferrer"
+  target="_blank"
+>
+  text
+</a>
+`;
+
+exports[`createFactory > external 2`] = `
+<a
+  className="panda-link panda-link-default"
+  href="https://example.com"
+  onClick={[Function]}
+  rel="noopener noreferrer"
+  target="_blank"
+>
+  text
+</a>
+`;
+
+exports[`createFactory > forceHtmlAnchor 1`] = `
+<a
+  className="panda-link panda-link-default"
+  href="/about"
+  onClick={[Function]}
+  rel="noopener noreferrer"
+  target="_blank"
+>
+  text
+</a>
+`;
+
+exports[`createFactory > forceHtmlAnchor 2`] = `
+<a
+  className="panda-link panda-link-default"
+  href="/about"
+  onClick={[Function]}
+  rel="noopener noreferrer"
+  target="_blank"
+>
+  text
+</a>
+`;
+
+exports[`createFactory > forceHtmlAnchor with basename 1`] = `
+<a
+  className="panda-link panda-link-default"
+  href="/base/about"
+  onClick={[Function]}
+  rel="noopener noreferrer"
+  target="_blank"
+>
+  text
+</a>
+`;
+
+exports[`createFactory > forceHtmlAnchor with basename 2`] = `null`;
+
+exports[`createFactory > hash 1`] = `
+<a
+  className="panda-link panda-link-default"
+  href="/#1"
+  onClick={[Function]}
+>
+  text
+</a>
+`;
+
+exports[`createFactory > hash 2`] = `
+<a
+  aria-current="page"
+  className="panda-link panda-link-default active"
+  href="/#1"
+  onClick={[Function]}
+>
+  text
+</a>
+`;
+
+exports[`createFactory > query 1`] = `
+<a
+  className="panda-link panda-link-default"
+  href="/users/danceprhil?from=file"
+  onClick={[Function]}
+>
+  text
+</a>
+`;
+
+exports[`createFactory > query 2`] = `
+<a
+  className="panda-link panda-link-default"
+  href="/users/danceprhil?from=file"
+  onClick={[Function]}
+>
+  text
+</a>
+`;
+
+exports[`createFactory > react-router-dom children props 1`] = `
+<a
+  className="panda-link panda-link-default"
+  href="/"
+  onClick={[Function]}
+>
+  text
+</a>
+`;
+
+exports[`createFactory > react-router-dom children props 2`] = `
+<a
+  aria-current="page"
+  className="panda-link panda-link-default active"
+  href="/"
+  onClick={[Function]}
+>
+  text
+</a>
+`;
+
+exports[`createFactory > react-router-dom children props 3`] = `
+<a
+  className="panda-link panda-link-default"
+  href="/"
+  onClick={[Function]}
+/>
+`;
+
+exports[`createFactory > react-router-dom children props 4`] = `
+<a
+  aria-current="page"
+  className="panda-link panda-link-default active"
+  href="/"
+  onClick={[Function]}
+/>
+`;
+
+exports[`createFactory > react-router-dom className props 1`] = `
+<a
+  className="panda-link panda-link-default class1"
+  href="/"
+  onClick={[Function]}
+>
+  text
+</a>
+`;
+
+exports[`createFactory > react-router-dom className props 2`] = `
+<a
+  aria-current="page"
+  className="panda-link panda-link-default class1 active"
+  href="/"
+  onClick={[Function]}
+>
+  text
+</a>
+`;
+
+exports[`createFactory > react-router-dom className props 3`] = `
+<a
+  className="panda-link panda-link-default class2"
+  href="/"
+  onClick={[Function]}
+>
+  text
+</a>
+`;
+
+exports[`createFactory > react-router-dom className props 4`] = `
+<a
+  aria-current="page"
+  className="panda-link panda-link-default class2"
+  href="/"
+  onClick={[Function]}
+>
+  text
+</a>
+`;
+
+exports[`createFactory > react-router-dom className props 5`] = `
+<a
+  className="panda-link panda-link-default"
+  href="/"
+  onClick={[Function]}
+>
+  text
+</a>
+`;
+
+exports[`createFactory > react-router-dom className props 6`] = `
+<a
+  aria-current="page"
+  className="panda-link panda-link-default active"
+  href="/"
+  onClick={[Function]}
+>
+  text
+</a>
+`;
+
+exports[`createFactory > react-router-dom style props 1`] = `
+<a
+  className="panda-link panda-link-default"
+  href="/"
+  onClick={[Function]}
+  style={
+    {
+      "color": "pink",
+    }
+  }
+>
+  text
+</a>
+`;
+
+exports[`createFactory > react-router-dom style props 2`] = `
+<a
+  aria-current="page"
+  className="panda-link panda-link-default active"
+  href="/"
+  onClick={[Function]}
+  style={
+    {
+      "color": "pink",
+    }
+  }
+>
+  text
+</a>
+`;
+
+exports[`createFactory > react-router-dom style props 3`] = `
+<a
+  className="panda-link panda-link-default"
+  href="/"
+  onClick={[Function]}
+  style={
+    {
+      "color": "hotpink",
+    }
+  }
+>
+  text
+</a>
+`;
+
+exports[`createFactory > react-router-dom style props 4`] = `
+<a
+  aria-current="page"
+  className="panda-link panda-link-default active"
+  href="/"
+  onClick={[Function]}
+  style={
+    {
+      "color": "hotpink",
+    }
+  }
+>
+  text
+</a>
+`;
+
+exports[`createFactory > react-router-dom to props 1`] = `
+<a
+  className="panda-link panda-link-default"
+  onClick={[Function]}
+>
+  text
+</a>
+`;
+
+exports[`createFactory > react-router-dom to props 2`] = `
+<a
+  className="panda-link panda-link-default"
+  onClick={[Function]}
+>
+  text
+</a>
+`;
+
+exports[`createFactory > react-router-dom to props 3`] = `
+<a
+  className="panda-link panda-link-default"
+  href="/"
+  onClick={[Function]}
+>
+  text
+</a>
+`;
+
+exports[`createFactory > react-router-dom to props 4`] = `
+<a
+  aria-current="page"
+  className="panda-link panda-link-default active"
+  href="/"
+  onClick={[Function]}
+>
+  text
+</a>
+`;
+
+exports[`createFactory > template 1`] = `
+<a
+  className="panda-link panda-link-default"
+  href="/users/danceprhil"
+  onClick={[Function]}
+>
+  text
+</a>
+`;
+
+exports[`createFactory > template 2`] = `
+<a
+  className="panda-link panda-link-default"
+  href="/users/danceprhil"
+  onClick={[Function]}
+>
+  text
+</a>
+`;
 
 exports[`createFactory Link 1`] = `
 <a
